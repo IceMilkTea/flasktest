@@ -1,0 +1,387 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+
+<meta http-equiv="refresh" content="300" />
+
+<div id="mySidenav" class="sidenav text-primary">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h5>Stock Ticker</h5>
+        <div class="col-md-11">
+            <select name="my_name" class="form-control">
+                {% for key, value in mydict.items() %}
+                    <option value="{{key}}" {% if (key == target) %}selected="selected" {% endif %}>
+                    {{value}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+</div>
+
+
+
+
+<div align="center">
+    <div class="col-md-12">
+
+        <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+        <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+        <h3 class="text-center">
+          <img class="animated-gif" src="{{url_for('static', filename='5.gif')}}" >
+        </h3>
+
+    </div>
+    <hr size="8" width="100%" color="red">
+    <hr size="8" width="100%" color="red">
+
+
+    <form method="POST">
+
+        <p>Select stock for recommendation</p>
+        <select name="my_name" class="form-control">
+            {% for key, value in mydict.items() %}
+                <option value="{{key}}" {% if (key == target) %}selected="selected" {% endif %}>
+                {{value}}
+                </option>
+            {% endfor %}
+        </select>
+        <br>
+        <h1 class="text-center">
+           <button name="buy" value="buy" class="btn btn-primary">Submit Stock</button>
+        </h1>
+
+    </form>
+
+
+    {% if quote|length > 1 %}
+
+        <div class="page-wrapper">
+        <!-- Bread crumb -->
+        <div class="row page-titles">
+            <div class="col-md-12 align-self-center w-card containers" style="margin-bottom:3%">
+                <h3 class="text-primary"> <b>TODAY'S {{quote}} STOCK DATA</b></h3> </div>
+            <div class="col-md-7 align-self-center">
+
+            </div>
+        </div>
+        <!-- End Bread crumb -->
+        <!-- Container fluid  -->
+        <div class="container-fluid">
+            <!-- Start Page Content -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="w-card bg-primary p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-bag f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white" style="text-align: center; font-size: 20px;" >{{open_s}}</h2>
+                                <p class="m-b-0 text-white">OPEN</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="w-card bg-warning p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-comment f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white" style="text-align: center; font-size: 20px;">{{high_s}}</h2>
+                                <p class="m-b-0 text-white">HIGH</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="w-card bg-success p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-vector f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white" style="text-align: center; font-size: 20px;">{{low_s}}</h2>
+                                <p class="m-b-0 text-white">LOW</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="margin-top:3%">
+                    <div class="w-card bg-danger p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-location-pin f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white"style="text-align: center; font-size: 20px;">{{close_s}}</h2>
+                                <p class="m-b-0 text-white">CLOSE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="margin-top:3%">
+                    <div class="w-card bg-warning p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-comment f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white" style="text-align: center; font-size: 20px;">{{adj_close}}</h2>
+                                <p class="m-b-0 text-white">ADJ CLOSE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4" style="margin-top:3%">
+                    <div class="w-card bg-primary p-20">
+                        <div class="media widget-ten containers">
+                            <div class="media-left meida media-middle">
+                                <span><i class="ti-bag f-s-40"></i></span>
+                            </div>
+                            <div class="media-body media-text-right">
+                                <h2 class="color-white text-white" style="text-align: center; font-size: 20px;">{{vol}}</h2>
+                                <p class="m-b-0 text-white">VOLUME</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px">
+                    <div class="col-lg-6" width="100%">
+                        <div class="w-card containers">
+                            <div class="card-title">
+                                <h4 style="text-align: center; font-size: 15px;">RECENT TRENDS IN {{quote}} STOCK PRICES</h4>
+                            </div>
+                            <div class="sales-chart">
+                                <img width="100%" src="{{url_for('static', filename='Trends.png')}}" />
+                            </div>
+                        </div>
+                        <!-- /# card -->
+                    </div>
+                    <!-- /# column -->
+
+                    <div class="col-lg-6" width="100%">
+                        <div class="w-card containers">
+                            <div class="card-title">
+                                <h4 style="text-align: center; font-size: 15px;">ARIMA MODEL ACCURACY</h4>
+                            </div>
+                            <div class="sales-chart">
+                                <img width="100%" src="{{url_for('static', filename='ARIMA.png')}}" />
+                            </div>
+                        </div>
+                        <!-- /# card -->
+                    </div>
+                    <!-- /# column -->
+                    <div class="col-lg-6" width="100%" style="margin-top:3%">
+                        <div class="w-card containers">
+                            <div class="card-title">
+                                <h4 style="text-align: center; font-size: 15px;">LSTM MODEL ACCURACY</h4>
+                            </div>
+                            <div class="team-chart">
+                                <img  width="100%" src="{{url_for('static', filename='LSTM.png')}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" width="100%" style="margin-top:3%">
+                        <div class="w-card containers">
+                            <div class="card-title">
+                                <h4 style="text-align: center; font-size: 15px;">LINEAR REGRESSION MODEL ACCURACY</h4>
+                            </div>
+                            <div class="team-chart">
+                                <img width="100%" src="{{url_for('static', filename='LR.png')}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ARIMA PRED -->
+                    <div class="col-md-4" width="100%"  style="margin-top:3%">
+                        <div class="w-card bg-success p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{arima_pred}}</h2>
+                                    <p class="m-b-0 text-white"  style="text-align: center; font-size: 15px;">TOMORROW'S {{quote}} CLOSING PRICE BY ARIMA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LSTM PRED -->
+                    <div class="col-md-4" width="100%" style="margin-top:3%">
+                        <div class="w-card bg-warning p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{lstm_pred}}</h2>
+                                    <p class="m-b-0 text-white"  style="text-align: center; font-size: 15px;">TOMORROW'S {{quote}} CLOSING PRICE BY LSTM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- LR PRED -->
+                    <div class="col-md-4" width="100%" style="margin-top:3%">
+                        <div class="w-card bg-danger p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{lr_pred}}</h2>
+                                    <p class="m-b-0 text-white" style="text-align: center; font-size: 15px;">TOMORROW'S {{quote}} CLOSING PRICE BY LR</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ARIMA ERR-->
+                    <div class="col-md-4" width="100%" style="margin-top:3%">
+                        <div class="w-card bg-primary p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-vector f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{error_arima}}</h2>
+                                    <p class="m-b-0 text-white">ARIMA RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LSTM ERR -->
+                    <div class="col-md-4" width="100%" style="margin-top:3%">
+                        <div class="w-card bg-primary p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{error_lstm}}</h2>
+                                    <p class="m-b-0 text-white">LSTM RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- LR ERR -->
+                    <div class="col-md-4" width="100%" style="margin-top:3%">
+                        <div class="w-card bg-primary p-20">
+                            <div class="media widget-ten containers">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{error_lr}}</h2>
+                                    <p class="m-b-0 text-white">LINEAR REGRESSION RMSE</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+             <div class="col-lg-6" style="margin-left: 25%; margin-top: 5%">
+                        <div class="w-card containers">
+                            <div class="card-title">
+                                <h4>PREDICTED {{quote}} PRICE FOR THE NEXT 7 DAYS</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Close</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>
+                                                    <div>
+                                                        <a href="https://finance.yahoo.com/quote/{{quote}}"><img style="padding: 0px,0px,0px,0px;width:120px;height: 120px;" src="{{url_for('static', filename='fore.png')}}" alt=""></a>
+                                                    </div>
+                                                </td>
+                                                <td>{% for row in forecast_set %}
+                                          {{row[0]}}<br>
+                                          {% endfor %}</td>
+                                                <td><span></span></td>
+                                                <td><span></span></td>
+                                                <td><span class="badge badge-success"></span></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- OVERALL POLARITY -->
+                    <div class="col-md-4" width="100%"  style="margin-top:3%">
+                        <div class="card bg-success p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-location-pin f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white">{{tw_pol}}</h2>
+                                    <p class="m-b-0 text-white">OVERALL ANALYSIS</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" width="100%"  style="margin-top:3%">
+                        <div class="card bg-primary p-20">
+                            <div class="media widget-ten">
+                                <div class="media-left meida media-middle">
+                                    <span><i class="ti-comment f-s-40"></i></span>
+                                </div>
+                                <div class="media-body media-text-right">
+                                    <h2 class="color-white text-white" style="text-align: left; font-size: 12px;">According to the ML Predictions & Sentiment Analysis of the Tweets, a {{idea}} in {{quote}} stock is expected => {{decision}}</h2>
+                                    <p class="m-b-0 text-white">RECOMMENDATION</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+{% block custom_js_code %}
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
+
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
+{% endblock %}

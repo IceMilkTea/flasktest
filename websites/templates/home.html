@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<meta http-equiv="refresh" content="300" />
+
+<div class="col-md-12">
+
+   <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+   <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+   <h3 class="text-center">
+      <img class="animated-gif" src="{{url_for('static', filename='5.gif')}}" >
+   </h3>
+
+</div>
+<div class="col-md-6">
+   <h1 class="text-center text-info">Easy trading with minimal effort</h1>
+   <img class="animated-gif" style="width:100%;" src="{{url_for('static', filename='1.gif')}}" >
+</div>
+<div class="col-md-6">
+   <h1 class="text-center text-info">Easy Access to Multiple Stocks</h1>
+   <img class="animated-gif" style="width:100%;" src="{{url_for('static', filename='2.gif')}}" >
+</div>
+<div class="col-md-6">
+   <h1 class="text-center text-info">Simple to understand Indicators</h1>
+   <img class="animated-gif" style="width:100%;" src="{{url_for('static', filename='3.gif')}}" >
+</div>
+<div class="col-md-6">
+   <h1 class="text-center text-info">Start Trading , Start Earning</h1>
+   <img class="animated-gif" style="width:100%;" src="{{url_for('static', filename='4.gif')}}" >
+</div>
+{% endblock %}
+{% block custom_js_code %}
+{% endblock %}

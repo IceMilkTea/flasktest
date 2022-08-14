@@ -1,0 +1,140 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+
+<meta http-equiv="refresh" content="300" />
+
+<div id="mySidenav" class="sidenav text-primary">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h5>Stock Ticker</h5>
+        <div class="col-md-11">
+            <select name="my_name" class="form-control">
+                {% for key, value in mydict.items() %}
+                    <option value="{{key}}" {% if (key == target) %}selected="selected" {% endif %}>
+                    {{value}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+</div>
+
+
+
+
+<div align="center">
+    <div class="col-md-12">
+
+        <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+        <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+        <h3 class="text-center">
+          <img class="animated-gif" src="{{url_for('static', filename='5.gif')}}" >
+        </h3>
+
+    </div>
+    <hr size="8" width="100%" color="red">
+    <hr size="8" width="100%" color="red">
+
+    <form method="POST">
+        <h1 class="text-center">
+           <button name="buy" value="buy" class="btn btn-primary">Recommended to Buy</button>
+           <br>
+           <button name="sell" value="sell" class="btn btn-success">Recommended to Sell</button>
+        </h1>
+        <div align="center">
+            <h2 class="text-center">
+                <div class="col-sm-6">
+                      <h4 class="text-info" for="start">Start date</h4>
+                      <input class="form-control" type="date" id="start" name="start">
+                </div>
+            </h2>
+            <h2 class="text-center">
+                <div class="col-sm-6">
+                      <h4 class="text-sucess" for="end">End date</h4>
+                      <input  class="form-control" type="date" id="end" name="end">
+                </div>
+            </h2>
+        </div>
+    </form>
+    <br><br><br>
+
+    {% if string_logo|length > 5 and string_name|length > 5 and string_summary|length > 5 %}
+        <div>
+            <h1>Results</h1>
+        </div>
+        <hr>
+        <img src="{{ string_logo }}">
+        <hr>
+        <h3 class="text-success">{{string_name}}</h3>
+        <hr>
+        <span class="border border-secondary text-justify">{{string_summary}}</span>
+        <hr>
+        <hr>
+        <div id="chart" class="chart"></div>
+        <hr>
+        <div class="panel panel-success">
+          <div class="panel-body col-md-12" style='height: 400px; overflow: auto; width: 770px'>
+             <table style="font-size: 10px;" class="table w-auto table-striped table-responsive" id="table_1">
+                <thead class="thread-dark">
+                   <tr>
+                      <th>Date</th>
+                      <th>Open</th>
+                      <th>High</th>
+                      <th>Low</th>
+                      <th>Close</th>
+                      <th>Volume</th>
+                      <th>Dividends</th>
+                      <th>Stock Splits</th>
+
+                   </tr>
+                </thead>
+                <tbody>
+                   {% for value in list_of_dics %}
+                   <tr>
+                      <td>{{ value["Date"] }}</td>
+                      <td>{{ value["Open"] }}</td>
+                      <td>{{ value["Higg"] }}</td>
+                      <td>{{ value["Low"] }}</td>
+                      <td>{{ value["Close"] }}</td>
+                      <td>{{ value["Volume"] }}</td>
+                      <td>{{ value["Dividends"] }}</td>
+                      <td>{{ value["Stock Splits"] }}</td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
+             </table>
+          </div>
+       </div>
+    {% endif %}
+
+
+
+</div>
+
+{% endblock %}
+{% block custom_js_code %}
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
+
+
+
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
+{% endblock %}

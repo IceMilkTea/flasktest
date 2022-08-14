@@ -1,0 +1,224 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+
+<meta http-equiv="refresh" content="300" />
+
+<div align="center">
+    <div class="col-md-12">
+
+        <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+        <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+        <h3 class="text-center">
+          <img class="animated-gif" style="width:100%;" src="{{url_for('static', filename='5.gif')}}" >
+        </h3>
+
+    </div>
+    <hr size="8" width="100%" color="red">
+    <hr size="8" width="100%" color="red">
+    <h1><b>Stock Forecast App</b></h1>
+    <br>
+
+    <form method="POST">
+
+        <p>Select dataset for prediction</p>
+        <select name="my_name" class="form-control">
+            {% for key, value in mydict.items() %}
+                <option value="{{key}}" {% if (key == target) %}selected="selected" {% endif %}>
+                {{value}}
+                </option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <p>Years of prediction:</p>
+
+        <div class="slidecontainer">
+          <input type="range" name="myRange" min="1" max="4" value="1" step="1" class="slider" id="myRange">
+            <br>
+          <p>Value: <span id="demo"></span></p>
+        </div>
+
+        <h1 class="text-center">
+           <button name="buy" value="buy" class="btn btn-primary">Prediction</button>
+        </h1>
+
+    </form>
+
+    {% if forecast1|length > 1 %}
+        <div>
+            <h2>Raw data</h2>
+        </div>
+        <div class="panel panel-success">
+          <div class="panel-body col-md-7" style='height: 250px; overflow: auto; width:100%;'>
+             <table style="font-size: 10px;" class="table w-auto table-striped table-responsive" id="table_1">
+                <thead class="thread-dark">
+                   <tr>
+                      <th>Date</th>
+                      <th>Open</th>
+                      <th>High</th>
+                      <th>Low</th>
+                      <th>Close</th>
+                      <th>Adj Close</th>
+                      <th>Volume</th>
+
+                   </tr>
+                </thead>
+                <tbody>
+                   {% for value in data1 %}
+                   <tr>
+                      <td>{{ value["Date"] }}</td>
+                      <td>{{ value["Open"] }}</td>
+                      <td>{{ value["High"] }}</td>
+                      <td>{{ value["Low"] }}</td>
+                      <td>{{ value["Close"] }}</td>
+                      <td>{{ value["Adj Close"] }}</td>
+                      <td>{{ value["Volume"] }}</td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
+             </table>
+          </div>
+       </div
+        <hr>
+       <h3>Forecast plot</h3>
+        <div id="chart" class="chart" style='overflow: auto; width: 770px'></div>
+        <hr>
+        <h2>Forecast data</h2>
+        <div class="panel panel-success">
+          <div class="panel-body col-md-7" style='height: 400px; overflow: auto; width:100%;'>
+             <table style="font-size: 10px;" class="table w-auto table-striped table-responsive" id="table_2">
+                <thead class="thread-dark">
+                   <tr>
+                      <th>ds</th>
+                      <th>trend</th>
+                      <th>yhat_lower</th>
+                      <th>yhat_upper</th>
+                      <th>trend_lower</th>
+                      <th>trend_lower</th>
+                      <th>additive_terms</th>
+                       <th>additive_terms_lower</th>
+                      <th>additive_terms_upper</th>
+                      <th>weekly</th>
+                      <th>weekly_lower</th>
+                      <th>weekly_upper</th>
+                      <th>yearly</th>
+                      <th>yearly_lower</th>
+                       <th>yearly_upper</th>
+                      <th>multiplicative_terms</th>
+                      <th>multiplicative_terms_lower</th>
+                      <th>multiplicative_terms_upper</th>
+                      <th>yhat</th>
+
+                   </tr>
+                </thead>
+                <tbody>
+                   {% for value in forecast1 %}
+                   <tr>
+                      <td>{{ value["ds"] }}</td>
+                      <td>{{ value["trend"] }}</td>
+                      <td>{{ value["yhat_lower"] }}</td>
+                      <td>{{ value["yhat_upper"] }}</td>
+                      <td>{{ value["trend_lower"] }}</td>
+                      <td>{{ value["trend_upper"] }}</td>
+                      <td>{{ value["additive_terms"] }}</td>
+                       <td>{{ value["additive_terms_lower"] }}</td>
+                      <td>{{ value["additive_terms_upper"] }}</td>
+                      <td>{{ value["weekly"] }}</td>
+                      <td>{{ value["weekly_lower"] }}</td>
+                      <td>{{ value["weekly_upper"] }}</td>
+                      <td>{{ value["yearly"] }}</td>
+                      <td>{{ value["yearly_lower"] }}</td>
+                       <td>{{ value["yearly_upper"] }}</td>
+                      <td>{{ value["multiplicative_terms"] }}</td>
+                      <td>{{ value["multiplicative_terms_lower"] }}</td>
+                      <td>{{ value["multiplicative_terms_upper"] }}</td>
+                      <td>{{ value["yhat"] }}</td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
+             </table>
+          </div>
+        </div>
+        <hr>
+         <h3>Forecase for Year</h3>
+        <div id="chart1" class="chart1 col-md-4" style='overflow: auto; width:100%;'></div>
+        <hr>
+        <div style="padding-top:30px;">
+            <h3>Forecast components</h3>
+        </div>
+        <hr>
+        <div  style='overflow: auto; width: 770px'>
+        <img src="{{url_for('static', filename='book_read.png')}}" style="width:100%;">
+        </div>
+
+        <hr>
+    {% endif %}
+
+    <br><br><br>
+</div>
+
+{% endblock %}
+{% block custom_js_code %}
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
+$("#setting").hide();
+$("#epochs").hide();
+$("#batch").hide();
+
+$(document).ready(function() {
+  $("select.model").change(function() {
+    var selected = $(".model option:selected").text();
+    if (selected.indexOf("LSTM") >= 0) {
+        $("#setting").show();
+        $("#epochs").show();
+        $("#batch").show();
+    } else if (selected.indexOf("Linear Regression") >= 0) {
+        $("#setting").hide();
+        $("#epochs").hide();
+        $("#batch").hide();
+    }
+  });
+});
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+</script>
+
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+
+    var graphs = {{graphJSON1 | safe}};
+    Plotly.plot('chart',graphs,{});
+
+    var graphs1 = {{graphJSON2 | safe}};
+    Plotly.plot('chart1',graphs1,{});
+
+
+
+
+</script>
+{% endblock %}

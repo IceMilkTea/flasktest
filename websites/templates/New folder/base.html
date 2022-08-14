@@ -1,0 +1,121 @@
+<!-- Developed BY: Abdul Rehman
+Author: Feef
+Email: rehmana578@gmail.com
+Website: http://fiverrwala.com
+WhatsApp: +92 308 5092071 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tool</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link  href="{{ url_for('static', filename='css/style.css') }}"    rel="stylesheet" type="text/css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.js">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>{% block title %}Home Page | Container Tracker Panel{% endblock %}</title>
+ </head>
+<style>
+.w-card {
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+transition: 0.3s;
+}
+
+.w-card:hover {
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.containers {
+padding: 2px 2px;
+}
+</style>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+        <li class="nav-item"><a><span style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="material-icons">menu</i></span></a></li>
+      {% if is_login %}
+        <li class="nav-item">
+            <a  href="/"><i class ="fa fa-sign-in"></i> Login</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+            <a  href="/home"><i class ="fa fa-home"></i> Home</a>
+        </li>
+        {% if session['is_admin'] == 1 %}
+<!--            <li class="nav-item">-->
+<!--                <a  href="/recommendation"><i class ="fa fa-plus"></i> Recommendation</a>-->
+<!--            </li>-->
+
+            <li class="nav-item">
+                <a  href="/prophet"><i class ="fa fa-minus"></i> Prophet</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/stockdata"><i class ="fa fa-minus"></i> Stock Data</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/prediction"><i class ="fa fa-minus"></i> Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/progress"><i class ="fa fa-minus"></i> Progress</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/users"><i class ="fa fa-user"></i>  User Management</a>
+            </li>
+        {% endif %}
+        {% if session['is_admin'] != 1 %}
+            <li class="nav-item">
+                <a  href="/stockdata"><i class ="fa fa-minus"></i> Stock Data</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/recommendation2"><i class ="fa fa-plus"></i> Recommendation</a>
+            </li>
+        <li class="nav-item">
+                <a  href="/prediction"><i class ="fa fa-minus"></i> Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a  href="/progress"><i class ="fa fa-minus"></i> Progress</a>
+            </li>
+
+
+        {% endif %}
+    </ul>
+      <ul class="nav navbar-right">
+        <li class="nav-item">
+            <a  href="/logout"><i class ="fa fa-sign-out"></i> Logout</a>
+        </li>
+      {% endif %}
+        </ul>
+  </div>
+</nav>
+
+
+<div class="container">
+  <div class="row" style="margin-left: 17%;width: 750px;">
+    {% block content %}
+    {% endblock %}
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+{% block custom_js_code %}
+{% endblock %}
+
+
+</body>
+</html>
+

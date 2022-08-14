@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<meta http-equiv="refresh" content="300" />
+
+<div class="col-md-12">
+
+   <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+   <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+   <h3 class="text-center">
+      <img class="animated-gif" src="{{url_for('static', filename='5.gif')}}" >
+   </h3>
+
+</div>
+<br><br>
+<div class="col-lg-12" width="100%">
+   <img  width="100%" src="{{url_for('static', filename='1.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='2.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='3.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='4.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='5.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='6.jpg')}}" >
+</div>
+<div class="col-lg-12" width="100%">
+   <img width="100%" src="{{url_for('static', filename='7.jpg')}}" >
+</div>
+{% endblock %}
+{% block custom_js_code %}
+{% endblock %}

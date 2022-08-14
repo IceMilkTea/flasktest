@@ -1,0 +1,251 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<meta/>
+
+<div align="center">
+    <div class="col-md-12">
+
+        <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+        <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+        <h3 class="text-center">
+          <img class="animated-gif" style="width:50%;" src="{{url_for('static', filename='5.gif')}}" >
+        </h3>
+
+    </div>
+    <hr size="8" width="100%" color="red">
+    <hr size="8" width="100%" color="red">
+    <h1><b>Stock Forecast App</b></h1>
+    <br>
+</div>
+<h3 class="text-center text-info">Welcome to Watch List</h3>
+
+
+<div class="col-md-8" style="margin-left:15%">
+    <div class="panel panel-success" >
+   <div class="panel-heading primary" align="center">My Watch List</div>
+       <div class="panel-body col-md-12" align="center">
+            <table class="table-responsive" id="table_1">
+                  <thead>
+                    <tr>
+                      <th style="font-size:30px">Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for value in watch_list %}
+                          <tr style="font-size:18px; font-weight:bold; text-align: center">
+                              <td id="useremail"  value={{value.stock}} >{{ value["stock"] }}</td>
+                          </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+    </div>
+
+
+<div class="col-md-12" style="padding-top:50px;">
+    <div class="panel panel-success" >
+   <div class="panel-heading primary">Stock List</div>
+       <div class="panel-body col-md-12" align="center">
+            <table class="table-striped" id="table_2">
+                  <thead class="thread-dark">
+                    <tr>
+                      <th>Stock</th>
+                      <th>Name</th>
+                      <th>Sector</th>
+                      <th>Add Stock</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for value in mydict %}
+                          <tr>
+                              <td id="useremail"  value={{value.Symbol}} >{{ value["Symbol"] }}</td>
+                              <td>{{ value["Name"] }}</td>
+                              <td>{{ value["Sector"] }}</td>
+                              <td><button style="border-radius:50px;" type="button" value={{value.Symbol}} data-toggle="modal" data-target="#myModal" id="update" class="btn btn-success"> <i class ="fa fa-edit"></i><i>   </i> Add Stock </button></td>
+
+                          </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+    </div>
+
+<br>
+
+
+{% endblock %}
+{% block custom_js_code %}
+<script type="text/javascript">
+
+
+$(document).ready( function () {
+      $('#table_2').DataTable();
+      $("#user_email").keyup(function(){
+        $(".alert").remove();
+      });
+
+$(document).on('click','#update',function(){
+    var val  = $(this).val();
+    $('#email1').val(val)
+});
+
+$(document).on('click','#update',function(){
+    var val  = $(this).val();
+    Swal.fire({
+                          icon: 'warning',
+                          title: 'Add Stock',
+                          text: 'Are you sure you want to add Stock?',
+                            timer: 5000,
+                           type: 'warning',
+                           showCancelButton: true,
+                          confirmButtonText: "Yes"
+    }).then(function(result){ if (result.isConfirmed) {
+                $.ajax({
+                    url:'/stock_add/'+val,
+                    method:"POST",
+                    success:function(data){
+                    if (data['success']==1){
+                        Swal.fire({
+                          icon: 'warning',
+                          title: 'Add',
+                          text: data['msg'],
+                            timer: 5000,
+                          showCancelButton: false,
+                          showConfirmButton: false
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        },1000);
+                    }else{
+                         Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: data['msg'],
+                            timer: 5000,
+                          showCancelButton: false,
+                          showConfirmButton: false
+                        });
+                    }
+		            }
+		        });
+     }
+    });
+});
+$(document).ready(function(){
+  $('#login_button').click(function(){
+       var email1= $('#email1').val();
+       var username1= $('#username1').val();
+       var password1 = $('#password1').val();
+       if (username1 == '' || password1 == '' && username1.length==0 || password1.length==0){
+         Swal.fire({
+                  icon: 'error',
+                  title: 'Value Error',
+                  text: 'Please enter complete user information',
+                    timer: 5000,
+                  showCancelButton: false,
+                  showConfirmButton: false
+
+         });
+        return;
+    }
+       if(username1 != '' && password1 != '')
+       {
+            $.ajax({
+                 url:'/action',
+                 method:"POST",
+                 data: {email1:email1,username1:username1, password1:password1},
+                 success:function(data){
+                    if (data['success']==1){
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Good Job',
+                          text: data['msg'],
+                            timer: 5000,
+                          showCancelButton: false,
+                          showConfirmButton: false
+                        });
+                    }else{
+                         Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: data['msg'],
+                            timer: 5000,
+                          showCancelButton: false,
+                          showConfirmButton: false
+
+                        });
+                        $('#loginModal').hide();
+                        location.reload();
+                    }
+                }
+            });
+       }
+  });
+});
+
+
+
+
+
+
+$(document).on('click','#addRow',function(){
+    if ($("#user_email").val().length==0 || $("#user_email").val()=="" && $("#name").val().length==0 || $("#name").val()=="" && $("#password").val().length>4 || $("#password").val()==""){
+         Swal.fire({
+                  icon: 'error',
+                  title: 'Value Error',
+                  text: 'Please enter complete user information',
+                    timer: 5000,
+                  showCancelButton: false,
+                  showConfirmButton: false
+
+         });
+        return;
+    }
+    $.ajax({
+        'url' : '/save_users',
+        'method': 'POST',
+        'data' : {
+            'user_email':$("#user_email").val(),
+            'name':$("#name").val(),
+            'password':$("#password").val(),
+        },
+        dataType:"JSON",
+        success:function(data){
+            if (data['success']==1){
+                $("#user_email").val("");
+                $("#name").val("");
+                $("#password").val("");
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Good Job',
+                  text: data['msg'],
+                    timer: 5000,
+                  showCancelButton: false,
+                  showConfirmButton: false
+
+                });
+            }else{
+                 Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: data['msg'],
+                    timer: 50000,
+                  showCancelButton: false,
+                  showConfirmButton: false
+
+                });
+            }
+        }
+    });  //end ajax call here
+    setTimeout(function(){location.reload()},5000);
+});
+
+} );
+</script>
+{% endblock %}

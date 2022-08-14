@@ -1,0 +1,251 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+
+<div id="mySidenav" class="sidenav text-primary">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <form method="POST">
+
+        <h2 class="text-info" for="start">Setting</h2>
+        <h3 class="text-info" for="start">Timeseries Settings</h3>
+
+        <div class="col-sm-11">
+            <h4>Select the Activity</h4>
+            <select name="favourite" class="form-control">
+                <option value="Train Model" selected="selected">Train Model</option>
+            </select>
+        </div>
+
+
+    </form>
+</div>
+
+
+<div align="center" style="padding-bottom:100px; ">
+    <div class="col-md-12">
+
+        <h1 class="text-center text-black"><b>Trading Through Machine Learning</b></h1>
+        <h3 class="text-center text-black">We use Machine Learning Algorithm to predict the future price of a stock</h3>
+        <h3 class="text-center">
+            <img class="animated-gif" style="width:520px;" src="{{url_for('static', filename='5.gif')}}">
+        </h3>
+
+    </div>
+    <hr size="8" width="100%" color="red">
+    <hr size="8" width="100%" color="red">
+    <h1>Stock Prediction App</h1>
+    <br>
+
+
+    <form method="POST">
+        <p>Years of prediction:</p>
+
+        <div class="slidecontainer">
+            <input type="range" name="myRange" min="1" max="4" value="1" step="1" class="slider" id="myRange">
+            <br>
+            <p>Value: <span id="demo"></span></p>
+        </div>
+        <h2>Train Machine Learning Models for Stock Prediction</h2>
+        <div class="col-md-6">
+            <p>Select Stock for Train </p>
+            <select name="stock_selected" class="form-control">
+                {% for key, value in mydict.items() %}
+                <option value="{{key}}" {% if (key== target) %}selected="selected" {% endif %}>
+                    {{value}}
+                </option>
+                {% endfor %}
+            </select>
+            <br>
+        </div>
+        <div class="col-md-6">
+            <p>Select Model for Train </p>
+            <select name="model_selected" class="form-control model">
+                {% for key, value in model.items() %}
+                <option id="{{key}}" value="{{key}}" {% if (key== target) %}selected="selected" {% endif %}>
+                    {{value}}
+                </option>
+                {% endfor %}
+            </select>
+            <br>
+        </div>
+        <h4 id="setting">Select the Number of epochs and batch size for training form the following</h4>
+
+        <div class="slidecontainer" id="epochs">
+            <p>Epochs</p>
+            <input type="range" name="epochs" min="1" max="300" value="1" step="1" class="slider" id="myRange1">
+            <br>
+            <p>Value: <span id="demo1"></span></p>
+        </div>
+        <hr>
+
+        <div class="slidecontainer" id="batch">
+            <p>Batch Sizes</p>
+            <input type="range" name="batch" min="32" max="1024" value="32" step="32" class="slider" id="myRange2">
+            <br>
+            <p>Value: <span id="demo2"></span></p>
+        </div>
+        <div class="col-sm-12">
+            <button name="submit" value="submit" class="btn btn-primary">Train Model</button>
+        </div>
+        <hr>
+        <hr>
+    </form>
+</div>
+
+
+{% if df_for_train|length > 2 %}
+
+<h4>Your final dataframe for Training</h4>
+
+<div class="panel panel-success">
+    <div class="panel-body col-md-12" style='height: 400px; overflow: auto;'>
+
+        <table style="font-size: 10px;" class="table w-auto table-striped table-responsive" id="table_1">
+            <thead class="thread-dark">
+            <tr>
+                <th>Date</th>
+                <th>Close</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for value in df_for_train %}
+            <tr>
+                <td>{{ value["Date"] }}</td>
+                <td>{{ value["Close"] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div style=" padding: 390px 0px 20px 0px;">
+    <h3><span class="border border-secondary">Your Model is Trained Succesfully!</span></h3>
+    <h5>Predicted Price vs Actual Close Price Results for - {{model_selected}}</h5>
+    <h5>Stock Prediction on Test Data for - {{stock_selected}}</h5>
+</div>
+
+<div class="panel panel-success">
+<div class="panel-body col-md-12" style='height: 400px; overflow: auto;'>
+    <table style="font-size: 10px;" class="table w-auto table-striped table-responsive" id="table_1">
+        <thead class="thread-dark">
+        <tr>
+            {% if 'Linear' in model_selected %}
+            <th>Date</th>
+            {% endif %}
+            <th>Close</th>
+            <th>Predicted</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for value in pred_data %}
+        <tr>
+            {% if 'Linear' in model_selected %}
+            <td>{{ value["Date"] }}</td>
+            {% endif %}
+            <td>{{ value["Close"] }}</td>
+            {% if 'Linear' in model_selected %}
+            <td>{{ value["Predicted"] }}</td>
+            {% endif %}
+            {% if 'LSTM' in model_selected %}
+            <td>{{ value["Predictions"] }}</td>
+            {% endif %}
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+
+<h4 style="padding-top:42rem;">Plotting Close Price vs Predicted Price for - {{model_selected}}</h4>
+
+<div>
+    {% if 'Linear' in model_selected %}
+    <div id="chart" class="chart" style='overflow: auto;'></div>
+    {% endif %}
+    {% if 'LSTM' in model_selected %}
+    <div>
+        <img width="100%" src="{{url_for('static', filename='lstm_predict.jpg')}}">
+    </div>
+    {% endif %}
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block custom_js_code %}
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+
+$("#setting").hide();
+$("#epochs").hide();
+$("#batch").hide();
+
+$(document).ready(function() {
+  $("select.model").change(function() {
+    var selected = $(".model option:selected").text();
+    if (selected.indexOf("LSTM") >= 0) {
+        $("#setting").show();
+        $("#epochs").show();
+        $("#batch").show();
+    } else if (selected.indexOf("Linear Regression") >= 0) {
+        $("#setting").hide();
+        $("#epochs").hide();
+        $("#batch").hide();
+    }
+  });
+});
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+var slider1 = document.getElementById("myRange1");
+var output1 = document.getElementById("demo1");
+output1.innerHTML = slider.value;
+
+slider1.oninput = function() {
+  output1.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("myRange2");
+var output2 = document.getElementById("demo2");
+output2.innerHTML = slider.value;
+
+slider2.oninput = function() {
+  output2.innerHTML = this.value;
+}
+
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+
+
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('chart',graphs,{});
+
+</script>
+{% endblock %}
